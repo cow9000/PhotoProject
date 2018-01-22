@@ -114,7 +114,7 @@ public class IntArrayWorker
   }
   
   public int getLargest() {
-	  int largestValue = 0;	
+	  int largestValue = Integer.MIN_VALUE;	
 	  for(int row = 0; row < matrix.length; row++) {
 		  for(int col = 0; col < matrix[0].length; col++) {
 			  if(matrix[row][col] > largestValue) largestValue = matrix[row][col];
