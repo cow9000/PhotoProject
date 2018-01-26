@@ -88,6 +88,13 @@ public class PictureTester
     swan.explore();
   }
   
+  public static void testCool() {
+	  Picture sample = new Picture("beach.jpg");
+	  sample.explore();
+	  sample.coolFilter(0, 0);
+	  sample.explore();
+  }
+  
   /** Main method for testing.  Every class can have a main
     * method in Java */
   public static void main(String[] args)
@@ -95,13 +102,14 @@ public class PictureTester
     // uncomment a call here to run a test
     // and comment out the ones you don't want
     // to run
-    testZeroBlue();
+    //testZeroBlue();
+	  testCool();
     //testKeepOnlyBlue();
     //testKeepOnlyRed();
     //testKeepOnlyGreen();
-    testNegate();
+    //testNegate();
     //testGrayscale();
-    testFixUnderwater();
+    //testFixUnderwater();
     //testMirrorVertical();
     //testMirrorTemple();
     //testMirrorArms();

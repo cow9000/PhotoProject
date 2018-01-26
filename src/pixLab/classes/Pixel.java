@@ -356,7 +356,7 @@ public class Pixel
  public boolean isTransparent() {
 	 boolean transparent = false;
 	 
-	 if(getAlpha() == 255 && getRed() == 0 && getBlue() == 0 && getGreen() == 0) {
+	 if(getAlpha() == 0 && getRed() == 0 && getBlue() == 0 && getGreen() == 0) {
 		 transparent = true;
 	 }
 	 
