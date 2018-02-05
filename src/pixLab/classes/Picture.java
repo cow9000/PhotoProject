@@ -273,7 +273,11 @@ public class Picture extends SimplePicture
   }
   
   
-  
+  int randomWithRange(int min, int max)
+  {
+     int range = (max - min) + 1;     
+     return (int)(Math.random() * range) + min;
+  }
   
 
   /** Method to create a collage of several pictures */
@@ -330,8 +334,7 @@ public class Picture extends SimplePicture
 		  }
 	  }
 	  //Wrap percentage
-	  int percentageWrap = (int) Math.random() * ((picturePixels[0].length * (1/5))*2) + (picturePixels[0].length * (1/5));
-	  percentageWrap = 25;
+	  int percentageWrap = (int) randomWithRange(20,40);
 	  
 	  //What column it starts with.
 	  double pixelLength =  (picturePixels[0].length * (percentageWrap/100.0));
@@ -342,16 +345,6 @@ public class Picture extends SimplePicture
 		  int regularCol = 0;
 		  for(int col = 0; col < picturePixels[0].length; col++) {
 			  
-			  int adjustedCol = col+30;
-  			  int adjustedRow = row+20;
-  			  Color changeColor = originalPixels[row][col];
-  			  originalPixels[row][col] = new Color(changeColor.getRed(), 0,changeColor.getBlue());
-  			  
-  			  if(adjustedRow < picturePixels.length) {
-  				  if(adjustedCol < picturePixels[0].length) {
-  					  picturePixels[adjustedRow][adjustedCol].setColor(originalPixels[row][col]);
-  				  }
-  			  }
 			  
 			  Color normalColor = originalPixels[row][col];
 			  
@@ -371,6 +364,49 @@ public class Picture extends SimplePicture
 			  
 		  }
 	  }
+	  
+	  int chunkSize = 48;
+	  int chunkAmount = picturePixels.length/chunkSize * picturePixels[0].length/chunkSize;
+	  
+	  int[] chunkChange = new int[8];
+	  for(int i = 0; i < chunkChange.length; i++) {
+		  chunkChange[i] = (int) (Math.random() * chunkAmount);
+	  }
+	  
+	  for(int rowChunk = 0; rowChunk < picturePixels.length/chunkSize; rowChunk++) {
+		  for(int colChunk = 0; colChunk < picturePixels[0].length/chunkSize; colChunk++) {
+			  for(int row = rowChunk*chunkSize; row < (rowChunk+1)*chunkSize; row++) {
+				  for(int col = colChunk*chunkSize; col < (colChunk+1)*chunkSize; col++) {
+					  int chunkNumber = rowChunk * colChunk;
+					  
+					  
+					  int randomized = randomWithRange(0,100);
+					  int adjustedCol = col+randomized;
+					  int adjustedRow = row+randomized;
+					  
+					  for(int i = 0; i < chunkChange.length; i++) {
+						  randomized = randomWithRange(0,100);
+						  adjustedCol = col+randomized;
+						  adjustedRow = row+randomized;
+						  
+						  if(chunkNumber == chunkChange[i]) {
+							  Color newColor = new Color(picturePixels[row][col].getRed(),0,picturePixels[row][col].getGreen());
+							  if(adjustedRow < picturePixels.length-1 && adjustedRow < picturePixels[0].length-1) picturePixels[adjustedRow][adjustedCol].setColor(newColor);
+							  
+								  if(col < picturePixels[0].length && row < picturePixels.length) {
+									  picturePixels[row][col].setBlue(randomWithRange(0,255));
+									  picturePixels[row][col].setRed(0);
+									  picturePixels[row][col].setGreen(randomWithRange(0,255));
+								  }
+						  }
+					  }
+					  
+					  
+				  }
+			  }
+		  }
+	  }
+	  
 	  
 	  
   }
