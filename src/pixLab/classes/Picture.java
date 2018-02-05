@@ -342,6 +342,17 @@ public class Picture extends SimplePicture
 		  int regularCol = 0;
 		  for(int col = 0; col < picturePixels[0].length; col++) {
 			  
+			  int adjustedCol = col+30;
+  			  int adjustedRow = row+20;
+  			  Color changeColor = originalPixels[row][col];
+  			  originalPixels[row][col] = new Color(changeColor.getRed(), 0,changeColor.getBlue());
+  			  
+  			  if(adjustedRow < picturePixels.length) {
+  				  if(adjustedCol < picturePixels[0].length) {
+  					  picturePixels[adjustedRow][adjustedCol].setColor(originalPixels[row][col]);
+  				  }
+  			  }
+			  
 			  Color normalColor = originalPixels[row][col];
 			  
 			  int colShift = picturePixels[0].length - startWrapPixel + col;
@@ -350,7 +361,7 @@ public class Picture extends SimplePicture
 			  
 			  //Move end of shift to shift
 			  if(!(startWrapPixel+col > picturePixels[0].length-1)) {
-				  Color endColor = picturePixels[row][startWrapPixel+col].getColor();
+				  Color endColor = originalPixels[row][startWrapPixel+col];
 				  
 				  picturePixels[row][col].setColor(endColor);
 				  regularCol++;
@@ -358,11 +369,9 @@ public class Picture extends SimplePicture
 			  
 			  
 			  
-			  
-			  
-			  
 		  }
 	  }
+	  
 	  
   }
   
