@@ -368,7 +368,7 @@ public class Picture extends SimplePicture
 	  int chunkSize = 10;
 	  int chunkAmount = picturePixels.length/chunkSize * picturePixels[0].length/chunkSize;
 	  
-	  int[] chunkChange = new int[800];
+	  int[] chunkChange = new int[400];
 	  for(int i = 0; i < chunkChange.length; i++) {
 		  chunkChange[i] = (int) (Math.random() * chunkAmount);
 	  }
@@ -390,7 +390,7 @@ public class Picture extends SimplePicture
 						  adjustedRow = row+randomized;
 						  
 						  if(chunkNumber == chunkChange[i]) {
-							  Color newColor = new Color(picturePixels[row][col].getRed(),0,picturePixels[row][col].getGreen());
+							  Color newColor = new Color(picturePixels[row][col].getRed(),picturePixels[row][col].getGreen(),0);
 							  if(adjustedRow < picturePixels.length-1 && adjustedCol < picturePixels[0].length-1 && adjustedRow > 0 && adjustedCol > 0) picturePixels[adjustedRow][adjustedCol].setColor(newColor);
 							  
 								  if(col < picturePixels[0].length && row < picturePixels.length) {
