@@ -365,10 +365,10 @@ public class Picture extends SimplePicture
 		  }
 	  }
 	  
-	  int chunkSize = 48;
+	  int chunkSize = 10;
 	  int chunkAmount = picturePixels.length/chunkSize * picturePixels[0].length/chunkSize;
 	  
-	  int[] chunkChange = new int[8];
+	  int[] chunkChange = new int[80];
 	  for(int i = 0; i < chunkChange.length; i++) {
 		  chunkChange[i] = (int) (Math.random() * chunkAmount);
 	  }
@@ -391,12 +391,12 @@ public class Picture extends SimplePicture
 						  
 						  if(chunkNumber == chunkChange[i]) {
 							  Color newColor = new Color(picturePixels[row][col].getRed(),0,picturePixels[row][col].getGreen());
-							  if(adjustedRow < picturePixels.length-1 && adjustedRow < picturePixels[0].length-1) picturePixels[adjustedRow][adjustedCol].setColor(newColor);
+							  if(adjustedRow < picturePixels.length-1 && adjustedCol < picturePixels[0].length-1) picturePixels[adjustedRow][adjustedCol].setColor(newColor);
 							  
 								  if(col < picturePixels[0].length && row < picturePixels.length) {
-									  picturePixels[row][col].setBlue(randomWithRange(0,255));
-									  picturePixels[row][col].setRed(0);
-									  picturePixels[row][col].setGreen(randomWithRange(0,255));
+									  picturePixels[row][col].setBlue(randomWithRange(0,25));
+									  picturePixels[row][col].setRed(randomWithRange(0,75));
+									  picturePixels[row][col].setGreen(randomWithRange(0,97));
 								  }
 						  }
 					  }
