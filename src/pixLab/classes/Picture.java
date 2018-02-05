@@ -322,6 +322,13 @@ public class Picture extends SimplePicture
   
   public void glitchFilter() {
 	  Pixel[][] picturePixels = this.getPixels2D();
+	  Color[][] originalPixels = new Color[picturePixels.length][picturePixels[0].length];
+	  for(int row = 0; row < picturePixels.length; row++) {
+		  for(int col = 0; col < picturePixels[0].length; col++) {
+			  originalPixels[row][col] = picturePixels[row][col].getColor();
+			  
+		  }
+	  }
 	  //Wrap percentage
 	  int percentageWrap = (int) Math.random() * ((picturePixels[0].length * (1/5))*2) + (picturePixels[0].length * (1/5));
 	  percentageWrap = 25;
@@ -335,18 +342,19 @@ public class Picture extends SimplePicture
 		  int regularCol = 0;
 		  for(int col = 0; col < picturePixels[0].length; col++) {
 			  
+			  Color normalColor = originalPixels[row][col];
+			  
+			  int colShift = picturePixels[0].length - startWrapPixel + col;
+			  if(colShift < picturePixels[0].length - 1) picturePixels[row][colShift].setColor(normalColor);
+			  
+			  
 			  //Move end of shift to shift
-				  Color endColor = picturePixels[row][picturePixels[0].length-col-1].getColor();
+			  if(!(startWrapPixel+col > picturePixels[0].length-1)) {
+				  Color endColor = picturePixels[row][startWrapPixel+col].getColor();
 				  
 				  picturePixels[row][col].setColor(endColor);
-				  
-			  
-			  Color normalColor = picturePixels[row][col].getColor();
-			  int colShift = endWrapPixel - startWrapPixel + col;
-			  if(colShift < picturePixels[0].length) {
-				  picturePixels[row][colShift].setColor(normalColor);
+				  regularCol++;
 			  }
-			  
 			  
 			  
 			  
