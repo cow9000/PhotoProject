@@ -1,11 +1,6 @@
 package pixLab.classes;
-import java.awt.*;
-import java.awt.font.*;
-import java.awt.geom.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.text.*;
-import java.util.*;
-import java.util.List; // resolves problem with java.awt.List and java.util.List
 
 /**
  * A class that represents a picture.  This class inherits from 
@@ -197,6 +192,28 @@ public class Picture extends SimplePicture
     }
   }
   
+  /**filter I made*/
+  public void filterIMade() {
+	  Pixel[][] pixels = this.getPixels2D();
+	  for(int rowChunk = 0; rowChunk < pixels.length/16; rowChunk++) {
+		  for (int colChunk = 0; colChunk < pixels[0].length/16; colChunk++) {
+			  int colorChannel = (int) (Math.random() * 3);
+			  
+			  for(int row = rowChunk * 16; row < (rowChunk+1)*16; row++) {
+				  for(int col = colChunk * 16; col < (colChunk+1)*16; col++) {
+					  if(colorChannel == 0) {
+						 pixels[row][col].setRed(0); 
+					  }else if(colorChannel == 1) {
+						  pixels[row][col].setGreen(0); 
+					  }else if(colorChannel == 2) {
+						  pixels[row][col].setBlue(0); 
+					  }
+				  }
+			  }
+		  }
+	  }
+  }
+  
   /** copy from the passed fromPic to the
     * specified startRow and startCol in the
     * current picture
@@ -254,6 +271,10 @@ public class Picture extends SimplePicture
 	  }
 	  
   }
+  
+  
+  
+  
 
   /** Method to create a collage of several pictures */
   public void createCollage()
@@ -299,15 +320,48 @@ public class Picture extends SimplePicture
     }
   }
   
+  public void glitchFilter() {
+	  Pixel[][] picturePixels = this.getPixels2D();
+	  //Wrap percentage
+	  int percentageWrap = (int) Math.random() * ((picturePixels[0].length * (1/5))*2) + (picturePixels[0].length * (1/5));
+	  percentageWrap = 25;
+	  
+	  //What column it starts with.
+	  double pixelLength =  (picturePixels[0].length * (percentageWrap/100.0));
+	  int startWrapPixel = (int) (picturePixels[0].length - pixelLength);
+	  int endWrapPixel = picturePixels[0].length;
+	  
+	  for(int row = 0; row < picturePixels.length; row++) {
+		  int regularCol = 0;
+		  for(int col = 0; col < picturePixels[0].length; col++) {
+			  
+			  
+			  if(col >= startWrapPixel) {
+				  
+				  Color endColor = picturePixels[row][col].getColor();
+				  
+				  picturePixels[row][regularCol].setColor(endColor);
+				  regularCol ++;
+			  }
+			  
+			  
+			  
+			  
+			  
+		  }
+	  }
+	  
+  }
+  
   
   /* Main method for testing - each class in Java can have a main 
    * method 
    */
   public static void main(String[] args) 
   {
-    Picture beach = new Picture("water.jpg");
+    Picture beach = new Picture("cool.png");
     beach.explore();
-    beach.fixUnderwater();
+    beach.glitchFilter();
     beach.explore();
   }
   
