@@ -472,20 +472,28 @@ public class Picture extends SimplePicture
 				  System.out.println("Bob ross distance");
 				  
 				  bobCol++;
-				  if(bobCol > bobPixels[0].length - 2) bobCol = 0;
+				  if(bobCol > bobPixels[0].length -1) bobCol = 0;
+				  System.out.println(bobCol);
+				  System.out.println(bobPixels[0].length);
 				  
-				  bobRow++;
-				  if(bobRow > bobPixels.length - 2) bobRow = 0;
+				  
+				  
 				  
 				  Color bobColor = bobPixels[bobRow][bobCol].getColor();
+				  if(!bobPixels[bobRow][bobCol].isTransparent()) {
 				  
-				  picturePixels[row][col].setColor(bobColor);
+					  picturePixels[row][col].setColor(bobColor);
+				  }
 			  }
 			  
 			  
 			  
 			  
 		  }
+		  
+		  bobRow++;
+		  if(bobRow > bobPixels.length-1) bobRow = 0;
+		  
 		  
 		 
 	  }
