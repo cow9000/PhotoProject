@@ -1,6 +1,7 @@
 package pixLab.classes;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 /**
  * A class that represents a picture.  This class inherits from 
@@ -365,39 +366,58 @@ public class Picture extends SimplePicture
 		  }
 	  }
 	  
-	  int chunkSize = 10;
+	  int chunkSize = 128;
 	  int chunkAmount = picturePixels.length/chunkSize * picturePixels[0].length/chunkSize;
 	  
-	  int[] chunkChange = new int[400];
+	  int[] chunkChange = new int[4];
 	  for(int i = 0; i < chunkChange.length; i++) {
-		  chunkChange[i] = (int) (Math.random() * chunkAmount);
+		  chunkChange[i] = randomWithRange(0,chunkAmount);
 	  }
+	  
+	  int[] chunkChange2 = new int[4];
+	  for(int i = 0; i < chunkChange2.length; i++) {
+		  chunkChange2[i] = randomWithRange(0,chunkAmount);
+	  }
+	  
+	  
+
 	  
 	  for(int rowChunk = 0; rowChunk < picturePixels.length/chunkSize; rowChunk++) {
 		  for(int colChunk = 0; colChunk < picturePixels[0].length/chunkSize; colChunk++) {
-			  for(int row = rowChunk*chunkSize; row < (rowChunk+1)*chunkSize; row++) {
-				  for(int col = colChunk*chunkSize; col < (colChunk+1)*chunkSize; col++) {
+			  int randomized = randomWithRange(-30,30);
+			  int randomized2 = randomWithRange(-30,30);
+			  
+			  for(int row = rowChunk*chunkSize+randomized; row < (rowChunk+1)*chunkSize+randomized; row++) {
+				  for(int col = colChunk*chunkSize+randomized2; col < (colChunk+1)*chunkSize+randomized2; col++) {
 					  int chunkNumber = rowChunk * colChunk;
 					  
-					  
-					  int randomized = randomWithRange(0,100);
 					  int adjustedCol = col+randomized;
-					  int adjustedRow = row+randomized;
+					  int adjustedRow = row+randomized2;
+				
 					  
 					  for(int i = 0; i < chunkChange.length; i++) {
-						  randomized = randomWithRange(-20,20);
-						  adjustedCol = col+randomized;
-						  adjustedRow = row+randomized;
 						  
 						  if(chunkNumber == chunkChange[i]) {
-							  Color newColor = new Color(picturePixels[row][col].getRed(),picturePixels[row][col].getGreen(),0);
-							  if(adjustedRow < picturePixels.length-1 && adjustedCol < picturePixels[0].length-1 && adjustedRow > 0 && adjustedCol > 0) picturePixels[adjustedRow][adjustedCol].setColor(newColor);
+							  if(row < picturePixels.length-1 && col < picturePixels[0].length-1 && row > 0 && col > 0 && adjustedRow < picturePixels.length-1 && adjustedCol < picturePixels[0].length-1 && adjustedRow > 0 && adjustedCol > 0) {
+							  
 							  
 								  if(col < picturePixels[0].length && row < picturePixels.length) {
 									  picturePixels[row][col].setBlue(randomWithRange(0,255));
 									  picturePixels[row][col].setRed(randomWithRange(0,255));
 									  picturePixels[row][col].setGreen(randomWithRange(0,255));
 								  }
+							  }
+						  }
+					  }
+					  
+					  for(int i = 0; i < chunkChange2.length; i++) {
+						  
+						  if(chunkNumber == chunkChange2[i]) {
+							  if(row < picturePixels.length-1 && col < picturePixels[0].length-1 && row > 0 && col > 0 && adjustedRow < picturePixels.length-1 && adjustedCol < picturePixels[0].length-1 && adjustedRow > 0 && adjustedCol > 0) {
+							  Color newColor = new Color(originalPixels[row][col].getRed(),0,originalPixels[row][col].getBlue());
+							   picturePixels[adjustedRow][adjustedCol].setColor(newColor);
+							   
+							  }
 						  }
 					  }
 					  
@@ -412,14 +432,76 @@ public class Picture extends SimplePicture
   }
   
   
+  public void classFilter() {
+	  
+	  //AM DONE
+	  Pixel[][] picturePixels = this.getPixels2D();
+	  Picture bobRoss = new Picture("BobRoss.png");
+	  Pixel[][] bobPixels = bobRoss.getPixels2D();
+	  Random rand = new Random();
+	  
+	  for(int r = 0; r < 50; r++) {
+		  int randomText = rand.nextInt(10);
+		  String text = "much wow";
+		  float red = (float) (rand.nextFloat() / 2f + 0.5);
+		  float green = (float) (rand.nextFloat() / 2f + 0.5);
+		  float blue = (float) (rand.nextFloat() / 2f + 0.5);
+		  if(randomText == 0) text = "such wow";
+		  else if(randomText == 1) text = "so meme";
+		  else if(randomText == 2) text = "fame";
+		  else if(randomText == 3) text = "never forget";
+		  else if(randomText == 4) text = "making history";
+		  else if(randomText == 5) text = "much popular";
+		  else if(randomText == 6) text = "such revelence";
+		  else if(randomText == 7) text = "wow";
+		  else if(randomText == 8) text = "much majestic";
+		  else if(randomText == 9) text = "so meme";
+		  addMessage(text, rand.nextInt(this.getWidth()), rand.nextInt(this.getHeight()), new Color(red,green,blue));
+	  }
+	  
+	  int bobRow = 0;
+	  int bobCol = 0;
+	  
+	  for(int row = 0; row < picturePixels.length; row++) {
+		  
+		  for(int col = 0; col < picturePixels[0].length; col++) {
+			  //PM
+			  //d=sqrt((r2-r1)^2+(g2-g1)^2+(b2-b1)^2)
+			  double bobRossColor = Math.sqrt(Math.pow(Color.orange.getRed() - picturePixels[row][col].getRed(),2) + Math.pow(Color.orange.getGreen() - picturePixels[row][col].getGreen(),2) + Math.pow(Color.orange.getBlue() - picturePixels[row][col].getBlue(),2)); 
+			  if(bobRossColor < 100) {
+				  System.out.println("Bob ross distance");
+				  
+				  bobCol++;
+				  if(bobCol > bobPixels[0].length - 2) bobCol = 0;
+				  
+				  bobRow++;
+				  if(bobRow > bobPixels.length - 2) bobRow = 0;
+				  
+				  Color bobColor = bobPixels[bobRow][bobCol].getColor();
+				  
+				  picturePixels[row][col].setColor(bobColor);
+			  }
+			  
+			  
+			  
+			  
+		  }
+		  
+		 
+	  }
+	  
+	  
+  }
+  
+  
   /* Main method for testing - each class in Java can have a main 
    * method 
    */
   public static void main(String[] args) 
   {
-    Picture beach = new Picture("beach.jpg");
+    Picture beach = new Picture("dogeroniOrange.jpg");
     beach.explore();
-    beach.glitchFilter();
+    beach.classFilter();
     beach.explore();
   }
   
