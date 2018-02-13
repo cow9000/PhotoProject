@@ -1,6 +1,8 @@
 package pixLab.classes;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -366,7 +368,7 @@ public class Picture extends SimplePicture
 		  }
 	  }
 	  
-	  int chunkSize = 128;
+	  int chunkSize = 256;
 	  int chunkAmount = picturePixels.length/chunkSize * picturePixels[0].length/chunkSize;
 	  
 	  int[] chunkChange = new int[4];
@@ -374,7 +376,7 @@ public class Picture extends SimplePicture
 		  chunkChange[i] = randomWithRange(0,chunkAmount);
 	  }
 	  
-	  int[] chunkChange2 = new int[4];
+	  int[] chunkChange2 = new int[10];
 	  for(int i = 0; i < chunkChange2.length; i++) {
 		  chunkChange2[i] = randomWithRange(0,chunkAmount);
 	  }
@@ -384,8 +386,8 @@ public class Picture extends SimplePicture
 	  
 	  for(int rowChunk = 0; rowChunk < picturePixels.length/chunkSize; rowChunk++) {
 		  for(int colChunk = 0; colChunk < picturePixels[0].length/chunkSize; colChunk++) {
-			  int randomized = randomWithRange(-30,30);
-			  int randomized2 = randomWithRange(-30,30);
+			  int randomized = randomWithRange(-2,2);
+			  int randomized2 = randomWithRange(-2,2);
 			  
 			  for(int row = rowChunk*chunkSize+randomized; row < (rowChunk+1)*chunkSize+randomized; row++) {
 				  for(int col = colChunk*chunkSize+randomized2; col < (colChunk+1)*chunkSize+randomized2; col++) {
@@ -414,7 +416,7 @@ public class Picture extends SimplePicture
 						  
 						  if(chunkNumber == chunkChange2[i]) {
 							  if(row < picturePixels.length-1 && col < picturePixels[0].length-1 && row > 0 && col > 0 && adjustedRow < picturePixels.length-1 && adjustedCol < picturePixels[0].length-1 && adjustedRow > 0 && adjustedCol > 0) {
-							  Color newColor = new Color(originalPixels[row][col].getRed(),0,originalPixels[row][col].getBlue());
+							  Color newColor = new Color(originalPixels[row][col].getRed(),picturePixels[adjustedRow][adjustedCol].getGreen(),originalPixels[row][col].getBlue());
 							   picturePixels[adjustedRow][adjustedCol].setColor(newColor);
 							   
 							  }
@@ -440,6 +442,7 @@ public class Picture extends SimplePicture
 	  Pixel[][] bobPixels = bobRoss.getPixels2D();
 	  Random rand = new Random();
 	  
+	  
 	  for(int r = 0; r < 50; r++) {
 		  int randomText = rand.nextInt(10);
 		  String text = "much wow";
@@ -462,21 +465,34 @@ public class Picture extends SimplePicture
 	  int bobRow = 0;
 	  int bobCol = 0;
 	  
+	  Pixel leftPixel = null;
+	  Pixel rightPixel = null;
+	  int mirrorAmount = 250;
+	  int mirrorStart = 850;
+	  
 	  for(int row = 0; row < picturePixels.length; row++) {
 		  
 		  for(int col = 0; col < picturePixels[0].length; col++) {
+			  
+			  
+			  
+			  
 			  //PM
 			  //d=sqrt((r2-r1)^2+(g2-g1)^2+(b2-b1)^2)
-			  double bobRossColor = Math.sqrt(Math.pow(Color.orange.getRed() - picturePixels[row][col].getRed(),2) + Math.pow(Color.orange.getGreen() - picturePixels[row][col].getGreen(),2) + Math.pow(Color.orange.getBlue() - picturePixels[row][col].getBlue(),2)); 
+			  double bobRossColor = Pixel.colorDistance(Color.orange, picturePixels[row][col].getColor());
 			  if(bobRossColor < 100) {
 				  System.out.println("Bob ross distance");
 				  
-				  bobCol++;
-				  if(bobCol > bobPixels[0].length -1) bobCol = 0;
 				  System.out.println(bobCol);
 				  System.out.println(bobPixels[0].length);
 				  
-				  
+				  bobCol++;
+				  if(bobCol > bobPixels[0].length -1) { 
+					  bobCol = 0; 
+					  bobRow++;
+					  if(bobRow > bobPixels.length-1) bobRow = 0;
+				  }
+				 
 				  
 				  
 				  Color bobColor = bobPixels[bobRow][bobCol].getColor();
@@ -484,15 +500,22 @@ public class Picture extends SimplePicture
 				  
 					  picturePixels[row][col].setColor(bobColor);
 				  }
+			  }	
+			  
+			  if(col < mirrorAmount && row > picturePixels.length - picturePixels.length*0.8) {
+				  
+				  leftPixel = picturePixels[row][col + mirrorStart];
+				  rightPixel = picturePixels[row][mirrorAmount - col - 1 + mirrorStart];
+				  
+				  rightPixel.setColor(leftPixel.getColor());
 			  }
 			  
 			  
-			  
-			  
 		  }
-		  
 		  bobRow++;
 		  if(bobRow > bobPixels.length-1) bobRow = 0;
+		  
+		  
 		  
 		  
 		 
@@ -507,10 +530,12 @@ public class Picture extends SimplePicture
    */
   public static void main(String[] args) 
   {
-    Picture beach = new Picture("dogeroniOrange.jpg");
-    beach.explore();
-    beach.classFilter();
-    beach.explore();
+    Picture dogeroni = new Picture("dogeroniOrange.jpg");
+    dogeroni.explore();
+    dogeroni.glitchFilter();
+    dogeroni.explore();
+    
+    dogeroni.write("DerekVawdreyPMFilter.jpg");
   }
   
 } // this } is the end of class Picture, put all new methods before this
