@@ -480,26 +480,28 @@ public class Picture extends SimplePicture
 			  //PM
 			  //d=sqrt((r2-r1)^2+(g2-g1)^2+(b2-b1)^2)
 			  double bobRossColor = Pixel.colorDistance(Color.orange, picturePixels[row][col].getColor());
-			  if(bobRossColor < 100) {
+			  if(bobRossColor < 180) {
 				  System.out.println("Bob ross distance");
 				  
 				  System.out.println(bobCol);
 				  System.out.println(bobPixels[0].length);
 				  
-				  bobCol++;
+				  
+				 
 				  if(bobCol > bobPixels[0].length -1) { 
 					  bobCol = 0; 
 					  bobRow++;
 					  if(bobRow > bobPixels.length-1) bobRow = 0;
 				  }
-				 
-				  
 				  
 				  Color bobColor = bobPixels[bobRow][bobCol].getColor();
 				  if(!bobPixels[bobRow][bobCol].isTransparent()) {
 				  
 					  picturePixels[row][col].setColor(bobColor);
 				  }
+				  
+				  
+				  
 			  }	
 			  
 			  if(col < mirrorAmount && row > picturePixels.length - picturePixels.length*0.8) {
@@ -509,7 +511,7 @@ public class Picture extends SimplePicture
 				  
 				  rightPixel.setColor(leftPixel.getColor());
 			  }
-			  
+			  bobCol++;
 			  
 		  }
 		  bobRow++;
@@ -532,7 +534,7 @@ public class Picture extends SimplePicture
   {
     Picture dogeroni = new Picture("dogeroniOrange.jpg");
     dogeroni.explore();
-    dogeroni.glitchFilter();
+    dogeroni.classFilter();
     dogeroni.explore();
     
     dogeroni.write("DerekVawdreyPMFilter.jpg");
